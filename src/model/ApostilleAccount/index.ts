@@ -1,56 +1,41 @@
-import { Account, NetworkType, PublicAccount, Transaction } from 'symbol-sdk'
+import { Account, PublicAccount, Transaction } from 'symbol-sdk'
 import { HashAlgorithm } from '../../hash/HashAlgorithm'
-import { SHA256 } from '../../hash/SHA256'
 import { NetworkInfomation } from '../NetworkInfomation'
+import { fixPrivateKey } from '../../util'
 
 export class ApostilleAccount {
-  readonly account: Account
-  readonly owner: PublicAccount
-  readonly generationHash: string
-  private hashAlgorithm: HashAlgorithm
-
   private constructor(
-    fileName: string,
-    ownerPublicKey: string,
-    hashAlgorithm: HashAlgorithm,
-    networkInfo: NetworkInfomation
-  ) {
-    const seed = `${fileName}-${ownerPublicKey}-${Date.now().toString()}`
-    const hash = hashAlgorithm.calcHash(seed)
-    const privateKey = this.fixPrivateKey(hash)
-    this.account = Account.createFromPrivateKey(
-      privateKey,
-      networkInfo.networkType
-    )
-    this.owner = PublicAccount.createFromPublicKey(
-      ownerPublicKey,
-      networkInfo.networkType
-    )
-    this.hashAlgorithm = hashAlgorithm
-    this.generationHash = networkInfo.generationHash
-  }
+    public readonly account: Account,
+    public readonly owner: PublicAccount,
+    public readonly hashAlgorithm: HashAlgorithm,
+    public readonly networkInfo: NetworkInfomation
+  ) {}
 
   public static create(
     fileName: string,
     publicKey: string,
-    networkInfo: NetworkInfomation
+    networkInfo: NetworkInfomation,
+    hashAlgorithm: HashAlgorithm
   ) {
-    const hash = new SHA256()
-    return new ApostilleAccount(fileName, publicKey, hash, networkInfo)
+    const seed = `${fileName}-${publicKey}-${Date.now().toString()}`
+    const hash = hashAlgorithm.calcHash(seed)
+    const privateKey = fixPrivateKey(hash)
+    const account = Account.createFromPrivateKey(
+      privateKey,
+      networkInfo.networkType
+    )
+    const owner = PublicAccount.createFromPublicKey(
+      publicKey,
+      networkInfo.networkType
+    )
+    return new ApostilleAccount(account, owner, hashAlgorithm, networkInfo)
   }
 
   public sign(tx: Transaction) {
-    return this.account.sign(tx, this.generationHash)
+    return this.account.sign(tx, this.networkInfo.generationHash)
   }
 
   public getSignedHash(payload: string) {
     return this.account.signData(this.hashAlgorithm.calcHash(payload))
-  }
-
-  private fixPrivateKey(privateKey: string) {
-    return `0000000000000000000000000000000000000000000000000000000000000000${privateKey.replace(
-      /^00/,
-      ''
-    )}`.slice(-64)
   }
 }

@@ -1,4 +1,11 @@
-import { NetworkType, PublicAccount } from 'symbol-sdk'
+import {
+  Address,
+  AggregateTransaction,
+  Deadline,
+  MultisigAccountModificationTransaction,
+  NetworkType,
+  PublicAccount
+} from 'symbol-sdk'
 import { HashAlgorithm } from './hash/HashAlgorithm'
 import { ApostilleOption } from './model/ApostilleOption'
 import { ApostilleTransaction } from './model/ApostilleTransaction'
@@ -61,6 +68,32 @@ export class ApostilleFacade {
       this.networkInfo.networkType
     )
     return apostilleAccount.verifySignature(hashedData, message.signedHash)
+  }
+
+  public releaseApostille(
+    apostilleAccountPulicKey: string,
+    ownerAddress: string
+  ) {
+    const apostilleAccount = PublicAccount.createFromPublicKey(
+      apostilleAccountPulicKey,
+      this.networkInfo.networkType
+    )
+    const owner = Address.createFromRawAddress(ownerAddress)
+    const multisigTx = MultisigAccountModificationTransaction.create(
+      Deadline.create(this.networkInfo.epochAdjustment),
+      0,
+      0,
+      [],
+      [owner],
+      this.networkInfo.networkType
+    ).toAggregate(apostilleAccount)
+    const aggTx = AggregateTransaction.createComplete(
+      Deadline.create(this.networkInfo.epochAdjustment),
+      [multisigTx],
+      this.networkInfo.networkType,
+      []
+    ).setMaxFeeForAggregate(this.networkInfo.feeMultipilier, 0)
+    return aggTx
   }
 
   private parseMessage(payload: string) {

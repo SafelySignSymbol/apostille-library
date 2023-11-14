@@ -39,7 +39,8 @@ export class ApostilleTransaction {
     const apostilleAccount = ApostilleAccount.create(
       fileName,
       ownerPublicKey,
-      networkInfo
+      networkInfo,
+      hashAlgorithm
     )
     const signedHash = apostilleAccount.getSignedHash(data)
     const txMsg = hashAlgorithm.checkSum + signedHash
