@@ -40,7 +40,7 @@ export class ApostilleAccount {
   }
 
   public sign(tx: Transaction) {
-    return this.account.sign(tx, '')
+    return this.account.sign(tx, this.generationHash)
   }
 
   public getSignedHash(payload: string) {
