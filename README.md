@@ -86,6 +86,30 @@ const isvalid = facade.auditApostille(data, payload, userPublicKey)
 console.log('isValid', isvalid)
 ```
 
+## Release Apostille
+
+Prepare
+
+```ts
+const NODE = 'https://sym-test-03.opening-line.jp:3001'
+const info = await ApostilleFacade.getNetworkInfomation(NODE)
+```
+
+Release
+
+```ts
+const tx = ApostilleFacade.releaseApostille(
+  apostilleAccountPublicKey,
+  owner,
+  info
+)
+const apostilleAccountPublicKey =
+  '1EEFDD16D611A68D033DBDF89C7D07D387D1363D72DBF6B1152D6855B746696B'
+const owner = getActiveAddress()
+setTransaction(tx)
+const signedTx = await requestSignWithCosignatories([])
+```
+
 # License
 
 Apache-2.0
