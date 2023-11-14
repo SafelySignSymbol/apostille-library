@@ -70,29 +70,30 @@ export class ApostilleFacade {
     return apostilleAccount.verifySignature(hashedData, message.signedHash)
   }
 
-  public releaseApostille(
+  public static releaseApostille(
     apostilleAccountPulicKey: string,
-    ownerAddress: string
+    ownerAddress: string,
+    networkInfo: NetworkInfomation
   ) {
     const apostilleAccount = PublicAccount.createFromPublicKey(
       apostilleAccountPulicKey,
-      this.networkInfo.networkType
+      networkInfo.networkType
     )
     const owner = Address.createFromRawAddress(ownerAddress)
     const multisigTx = MultisigAccountModificationTransaction.create(
-      Deadline.create(this.networkInfo.epochAdjustment),
+      Deadline.create(networkInfo.epochAdjustment),
       0,
       0,
       [],
       [owner],
-      this.networkInfo.networkType
+      networkInfo.networkType
     ).toAggregate(apostilleAccount)
     const aggTx = AggregateTransaction.createComplete(
-      Deadline.create(this.networkInfo.epochAdjustment),
+      Deadline.create(networkInfo.epochAdjustment),
       [multisigTx],
-      this.networkInfo.networkType,
+      networkInfo.networkType,
       []
-    ).setMaxFeeForAggregate(this.networkInfo.feeMultipilier, 0)
+    ).setMaxFeeForAggregate(networkInfo.feeMultipilier, 0)
     return aggTx
   }
 
