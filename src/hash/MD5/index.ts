@@ -1,22 +1,22 @@
-import { Message, sha256 } from 'js-sha256'
+import { createHash } from 'crypto'
 import { HashAlgorithm } from '../HashAlgorithm'
 
-export class SHA256 implements HashAlgorithm {
+export class MD5 implements HashAlgorithm {
   algorithmName: string
   checkSum: string
 
   constructor() {
-    this.algorithmName = 'sha256'
+    this.algorithmName = 'md5'
     this.checkSum = this.calculateCheckSum()
   }
 
   private calculateCheckSum(): string {
     const prefix = 'fe4e5459'
-    const hashType = '83'
+    const hashType = '81'
     return prefix + hashType
   }
 
   calcHash(data: string) {
-    return sha256.update(data).hex()
+    return createHash('md5').update(data).digest('hex')
   }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "@sss/apostille",
-  "version": "0.0.1",
+  "name": "@sss-symbol/apostille",
+  "version": "0.0.4",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,6 +16,14 @@
   ],
   "author": "inatatsu",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SafelySignSymbol/apostille-library.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SafelySignSymbol/apostille-library/issues"
+  },
+  "homepage": "https://github.com/SafelySignSymbol/apostille-library#readme",
   "dependencies": {
     "crypto": "^1.0.1",
     "defu": "^6.1.3",

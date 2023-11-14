@@ -43,7 +43,7 @@ export class ApostilleAccount {
     return this.account.sign(tx, '')
   }
 
-  public getSignedHash(payload: ArrayBuffer) {
+  public getSignedHash(payload: string) {
     return this.account.signData(this.hashAlgorithm.calcHash(payload))
   }
 

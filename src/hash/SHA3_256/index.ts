@@ -16,7 +16,7 @@ export class SHA3_256 implements HashAlgorithm {
     return prefix + hashType
   }
 
-  calcHash(data: string | ArrayBuffer) {
+  calcHash(data: string) {
     return sha3_256.update(data).hex()
   }
 }

@@ -29,7 +29,7 @@ export class ApostilleTransaction {
   }
 
   public static create(
-    data: ArrayBuffer,
+    data: string,
     fileName: string,
     ownerPublicKey: string,
     networkInfo: NetworkInfomation,

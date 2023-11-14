@@ -35,7 +35,7 @@ export class ApostilleFacade {
   }
 
   public createApostille(
-    data: ArrayBuffer,
+    data: string,
     fileName: string,
     ownerPublicKey: string,
     option: ApostilleOption

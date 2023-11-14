@@ -1,27 +1,27 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { SHA256 } from '.'
+import { KECCAK256 } from '.'
 import { HashAlgorithm } from '../HashAlgorithm'
 
-describe('SHA256', () => {
+describe('KECCAK256', () => {
   let sha256: HashAlgorithm
 
   beforeEach(() => {
-    sha256 = new SHA256()
+    sha256 = new KECCAK256()
   })
 
   it('ハッシュアルゴリズムの名前を取得', () => {
-    expect(sha256.algorithmName).toBe('sha256')
+    expect(sha256.algorithmName).toBe('keccak_256')
   })
 
   it('チェックサムを取得', () => {
-    expect(sha256.checkSum).toBe('fe4e545983')
+    expect(sha256.checkSum).toBe('fe4e545988')
   })
 
   it('ハッシュ値の計算', () => {
     const data = 'APOSTILLE'
-    // https://emn178.github.io/online-tools/sha256.html?input_type=utf-8&input=APOSTILLE&hmac_input_type=utf-8
+    // https://emn178.github.io/online-tools/keccak_256.html?input_type=utf-8&input=APOSTILLE
     const expectedHash =
-      'd79bf856c6add6bd1ef4915438fb211a6fe998ddfc6418b2bef1016b56576302'
+      'f279d55d41567375283d7d662448da92e33bf01e087aa8883f5bbd634d3ff9b3'
     expect(sha256.calcHash(data)).toBe(expectedHash)
   })
 })
