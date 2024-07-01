@@ -1,6 +1,7 @@
 import {
   Address,
   AggregateTransaction,
+  Convert,
   Deadline,
   MultisigAccountModificationTransaction,
   NetworkType,
@@ -68,6 +69,22 @@ export class ApostilleFacade {
       this.networkInfo.networkType
     )
     return apostilleAccount.verifySignature(hashedData, message.signedHash)
+  }
+
+  public async getAuditData(nodeUrl: string, hash: string) {
+    const result = await fetch(
+      `${nodeUrl}/transactions/confirmed/${hash}`
+    ).then((data) => data.json())
+    const apostilleAccountPublicKey = result.transaction.cosignatures[0]
+      .signerPublicKey as string
+    const rowMessage = result.transaction.transactions[0].transaction
+      .message as string
+    const payload = Convert.decodeHex(rowMessage.substring(2))
+
+    return {
+      apostilleAccountPublicKey,
+      payload
+    }
   }
 
   public static releaseApostille(
