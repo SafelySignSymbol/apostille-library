@@ -71,6 +71,21 @@ const isvalid = facade.auditApostille(data, payload, userPublicKey)
 ex: https://testnet.symbol.fyi/transactions/952355CC83D1C464F9979FA6AD18CB8FEE21AAF142459017F7292B41B45C0DCC
 
 ```ts
+const NODE = 'https://sym-test-03.opening-line.jp:3001'
+const info = await ApostilleFacade.getNetworkInfomation(NODE)
+const facade = new ApostilleFacade(HashType.SHA256, info)
+
+const hash = '952355CC83D1C464F9979FA6AD18CB8FEE21AAF142459017F7292B41B45C0DCC'
+
+const auditData = await facade.getAuditData(nodeUrl, hash)
+
+// auditData.apostilleAccountPublicKey
+// => 1EEFDD16D611A68D033DBDF89C7D07D387D1363D72DBF6B1152D6855B746696B
+// auditData.payload
+// => fe4e545983066D4ACFC95696BCA9267ADB5FEA9C23EC241707A60BA736A6EE35769CA16BDB85D984930C5F9FEAAD62851BFE184618F92F32E3CB1576509F466397A9031A09
+```
+
+```ts
 const data = 'APOSTILLE'
 
 const payload =
